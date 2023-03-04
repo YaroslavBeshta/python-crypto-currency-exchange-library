@@ -155,16 +155,12 @@ class Client:
             order["clientOid"] = flat_uuid()
 
         if amount:
-            resp = self._request("GET", f"contracts/{order['symbol']}")
-            multiplier = resp.get("multiplier")
+            symbol_info = self.contract_info(order['symbol'])
+            multiplier = symbol_info.get("multiplier")
             size = None
-            if amount >= multiplier and multiplier > 1:
-                size = amount // multiplier
-
             if amount >= 1 and multiplier < 1:
                 size = int(amount * (1 / multiplier))
-
-            if amount < 1 and multiplier < 1:
+            else:
                 size = amount // multiplier
 
             if size is None:
@@ -172,7 +168,7 @@ class Client:
             order["size"] = size
 
         new_order_response = self._request("POST", "orders", data=order)
-        
+
         if stop_loss_price:
             stop_loss_order = order.copy()
             stop_loss_order["clientOid"] = flat_uuid()
@@ -194,6 +190,9 @@ class Client:
             self._request("POST", "orders", data=take_profit_order)
 
         return new_order_response
+
+    def contract_info(self, symbol: str) -> dict:
+        return self._request("GET", f"contracts/{symbol}")
 
     def create_limit_order(
         self,
