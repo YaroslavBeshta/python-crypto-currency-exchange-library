@@ -26,27 +26,6 @@ jobs:
         run: |
           python -m build
 
-      - name: Extract package version
-        id: extract_version
-        run: |
-          echo ::set-output name=VERSION::$(python -c "import toml; print(toml.load('pyproject.toml')['tool']['poetry']['version'])")
-        
-      - name: Set package version
-        run: |
-          sed -i -e "s/version = \".*\"/version = \"$VERSION\"/g" pyproject.toml
-
-      - name: Commit changes
-        run: |
-          git config user.name "Github Actions"
-          git config user.email "actions@github.com"
-          git commit -a -m "Update package version to $VERSION" || echo "No changes to commit"
-
-      - name: Push changes
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
-
       - name: Build and Publish to TestPyPI
         uses: docker://python:3.9-buster
         with:
