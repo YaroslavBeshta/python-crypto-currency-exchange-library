@@ -45,12 +45,13 @@ jobs:
         uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.head_ref }}
+          branch: main
 
-      - name: Publish to TestPyPI
-        uses: pypa/gh-action-pypi-publish@27a1a9d2615d39c8e31e0d35a1f7b09763c6d8f6
+      - name: Build and Publish to TestPyPI
+        uses: docker://python:3.9-buster
         with:
-          username: __token__
-          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-          repository: testpypi
-          package: dist/*.whl dist/*.tar.gz
+          entrypoint: /bin/sh
+          args: -c "pip install -U pip && pip install build twine && python -m build --outdir dist && python -m twine upload --repository testpypi --skip-existing dist/*"
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.TEST_PYPI_API_TOKEN }}
