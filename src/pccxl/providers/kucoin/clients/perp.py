@@ -172,8 +172,8 @@ class Client:
         if stop_loss_price:
             stop_loss_order = order.copy()
             stop_loss_order["clientOid"] = flat_uuid()
-            stop_loss_order["stop"] = "down"
             stop_loss_order["side"] = SIDE_MAPPING.get(order['side'])
+            stop_loss_order["stop"] = "down" if order['side'] == "buy" else "up"
             stop_loss_order["stopPrice"] = stop_loss_price
             stop_loss_order["stopPriceType"] = "TP"
             stop_loss_order["reduceOnly"] = True
@@ -182,8 +182,8 @@ class Client:
         if take_profit_price:
             take_profit_order = order.copy()
             take_profit_order["clientOid"] = flat_uuid()
-            take_profit_order["stop"] = "up"
             take_profit_order["side"] = SIDE_MAPPING[order['side']]
+            take_profit_order["stop"] = "up" if order['side'] == "buy" else "down"
             take_profit_order["stopPrice"] = take_profit_price
             take_profit_order["stopPriceType"] = "TP"
             take_profit_order["reduceOnly"] = True
