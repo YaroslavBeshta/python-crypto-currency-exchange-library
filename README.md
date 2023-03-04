@@ -1,1 +1,3 @@
 # python-crypto-currency-exchange-library
+
+The Python package provides a comprehensive interface for accessing multiple cryptocurrency exchanges with a primary focus on order logic. With this package, developers can easily implement trading strategies that require interaction with various exchanges, while abstracting away the complexities of handling different APIs and data formats. The package supports a range of order types, including market, limit, stop-loss, and trailing-stop orders, enabling users to execute trades with precision and flexibility. 
