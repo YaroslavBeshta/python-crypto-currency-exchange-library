@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pccxl"
-version = ""
+version = "0.0.5"
 authors = [
   { name="Yaroslav Beshta", email="yaroslav.beshta@gmail.com" },
 ]
