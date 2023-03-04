@@ -1,8 +1,9 @@
 name: Build Package on PR
 
 on:
-  pull_request:
-    types: [opened, synchronize]
+  push:
+    branches:
+      - main
 
 jobs:
   build-package:
@@ -44,7 +45,7 @@ jobs:
         uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.head_ref }}
+          branch: main
 
       - name: Build and Publish to TestPyPI
         uses: docker://python:3.9-buster
